@@ -123,9 +123,20 @@ class InstagramAPI:
 
     def autoCompleteUserList(self):
         return self.SendRequest('friendships/autocomplete_user_list/')
-
+    
     def timelineFeed(self):
-        return self.SendRequest('feed/timeline/')
+        tz = -time.timezone
+        data = json.dumps({'_uuid': self.uuid,
+                           '_uid': self.username_id,
+                           '_csrftoken': self.token,
+                           'is_prefetch': '0',
+                           'battery_level': '100',
+                           'is_charging': '1',
+                           'will_sound_on': '1',
+                           'is_on_screen': 'true',
+                           'timezone_offset': tz,
+                           'experiment': 'ig_android_profile_contextual_feed'})
+        return self.SendRequest('feed/timeline/', data)
 
     def megaphoneLog(self):
         return self.SendRequest('megaphone/log/')
